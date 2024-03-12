@@ -1,0 +1,86 @@
+#include <bits/stdc++.h>
+#include <cctype>
+using namespace std;
+
+string ntext[10] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+vector<int> v(2, -1);
+// v[0] is num and v[1] is position
+
+void findstr(string str, bool rev)
+{
+  
+  if(rev){
+    for(int i=0;i<10;i++){
+      int pos = str.rfind(ntext[i]);
+      if(pos>=0 && pos<str.size()){
+        if((v[0]==-1 && v[1]==-1) || (pos>v[1])){
+          v[0]=i;
+          v[1]=pos;
+        }
+        }
+      }
+      return;
+  }
+    for(int i=0;i<10;i++){
+      int pos = str.find(ntext[i]);
+      if(pos>=0 && pos<str.size()){
+        if((v[0]==-1 && v[1]==-1) || (pos<v[1])){
+          v[0]=i;
+          v[1]=pos;
+        }
+        }
+      }
+}
+
+
+int main()
+{
+    string str;
+    vector<string> s;
+
+    while (getline(cin, str))
+    {
+        if (str.empty())
+        {
+            break;
+        }
+        s.push_back(str);
+    }
+    int ans = 0;
+    for (string &it : s)
+    {
+        int n = it.size();
+        int st = -1, stp, end = -1, enp, temp = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (isdigit(it[i]))
+            {
+                st = it[i] - '0';
+                stp = i;
+                break;
+            }
+        }
+        for (int i = n - 1; i >= 0; i--)
+        {
+            if (isdigit(it[i]))
+            {
+                end = it[i] - '0';
+                enp = i;
+                break;
+            }
+        }
+        vector<int> vsf, vef;
+
+        findstr(it,false);
+        vsf.insert(vsf.begin(), v.begin(), v.end());
+        findstr(it, true);
+        vef.insert(vef.begin(), v.begin(), v.end());
+
+        if (vsf[1] < stp && vsf[1] < n && vsf[1] >= 0)
+            st = vsf[0];
+        if (vef[1] > enp && vef[1] < n && vef[1] >= 0)
+            end = vef[0];
+        ans += (st * 10 + end);
+    }
+    cout << ans;
+}
