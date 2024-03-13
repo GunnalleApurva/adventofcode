@@ -46,7 +46,7 @@ int main()
         }
         s.push_back(str);
     }
-    int ans = 0;
+    long int ans = 0;
     for (string &it : s)
     {
         int n = it.size();
@@ -81,6 +81,7 @@ int main()
         if (vef[1] > enp && vef[1] < n && vef[1] >= 0)
             end = vef[0];
         ans += (st * 10 + end);
+        v[0]=v[1]=-1;
     }
     cout << ans;
 }
