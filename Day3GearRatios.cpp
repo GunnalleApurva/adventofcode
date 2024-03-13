@@ -1,9 +1,12 @@
+//https://adventofcode.com/2023/day/3
 #include <bits/stdc++.h>
+#include <cctype>
 using namespace std;
 
 bool isSymbol(char ch)
 {
-    return (!isdigit(ch) && ch != '.');
+    return (!isdigit(ch) && ch!='.') ;
+    
 }
 
 bool isAdjToSymbol(vector<string> &v, int i, int j)
@@ -42,32 +45,29 @@ int main()
         s.push_back(str);
     }
     int num = 0, ans = 0;
-    bool valid = false,firstOcc=false;
+    bool valid = false;
     for (int i = 0; i < s.size(); i++)
     {
         if (valid)
         {
-            ans += num;
+            ans += num; 
             num = 0;
             valid = false;
-            firstOcc = false;
         }
         for (int j = 0; j < s[i].size(); j++)
         {
             if (isdigit(s[i][j]))
             {
-                num = num * 10 + (s[i][j] - '0');
-                if(!firstOcc || (j!=s[i].size()-1 && !isdigit(s[i][j+1]))){
+                if(!num|| (j!=s[i].size()-1 && !isdigit(s[i][j+1])) || (j==s[i].size()-1)  ){
                 valid = valid || isAdjToSymbol(s, i, j);
-                firstOcc = true;
                 } // checking only for first and last digits of the number 
+                num = num * 10 + (s[i][j] - '0');
             }
             else
             {
                 if (valid)
                 {
                     ans += num;
-                    cout << num << " is valid\n";
                 }
                 num = 0;
                 valid = false;
