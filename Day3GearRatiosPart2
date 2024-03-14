@@ -1,0 +1,215 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+map<string, vector<int>> gr;
+vector<int> temp(2);
+string key = "";
+// key = "row , col"
+// tem[count],temp[prod]
+
+void reset()
+{
+    key.clear();
+    temp[0] = 0;
+    temp[1] = 1;
+}
+
+bool isSymbol(char ch)
+{
+    return (ch == '*');
+}
+
+bool isAdjToSymbol(vector<string> &v, int i, int j)
+{
+    if (i > 0)
+    {
+        if (isSymbol(v[i - 1][j]))
+        {
+            key = to_string(i - 1) + "," + to_string(j);
+            //  cout<<key<<endl;
+            if (gr.find(key) == gr.end())
+            {
+                gr.insert(pair<string, vector<int>>(key, temp));
+            }
+            gr[key][0] += 1;
+            return true;
+        }
+        if (j > 0)
+        {
+            if (isSymbol(v[i][j - 1]))
+            {
+                key = to_string(i) + "," + to_string(j - 1);
+                if (gr.find(key) == gr.end())
+                {
+                    gr.insert(pair<string, vector<int>>(key, temp));
+                }
+                gr[key][0] += 1;
+                return true;
+            }
+
+            if (isSymbol(v[i - 1][j - 1]))
+            {
+                key = to_string(i - 1) + "," + to_string(j - 1);
+                //   cout<<key<<endl;
+                if (gr.find(key) == gr.end())
+                {
+                    gr.insert(pair<string, vector<int>>(key, temp));
+                }
+                gr[key][0] += 1;
+                return true;
+            }
+        }
+        if (j < v[i].size() - 1)
+        {
+            if (isSymbol(v[i][j + 1]))
+            {
+                key = to_string(i) + "," + to_string(j + 1);
+                //  cout<<key<<endl;
+                if (gr.find(key) == gr.end())
+                {
+                    gr.insert(pair<string, vector<int>>(key, temp));
+                }
+                gr[key][0] += 1;
+                return true;
+            }
+            if (isSymbol(v[i - 1][j + 1]))
+            {
+                key = to_string(i - 1) + "," + to_string(j + 1);
+                //  cout<<key<<endl;
+                if (gr.find(key) == gr.end())
+                {
+                    gr.insert(pair<string, vector<int>>(key, temp));
+                }
+                gr[key][0] += 1;
+                return true;
+            }
+        }
+    }
+
+    if (i < v.size() - 1)
+    {
+        if (isSymbol(v[i + 1][j]))
+        {
+            key = to_string(i + 1) + "," + to_string(j);
+            //  cout<<key<<endl;
+            if (gr.find(key) == gr.end())
+            {
+                gr.insert(pair<string, vector<int>>(key, temp));
+            }
+            gr[key][0] += 1;
+            return true;
+        }
+        if (j > 0)
+        {
+            if (isSymbol(v[i + 1][j - 1]))
+            {
+                key = to_string(i + 1) + "," + to_string(j - 1);
+                //  cout<<key<<endl;
+                if (gr.find(key) == gr.end())
+                {
+                    gr.insert(pair<string, vector<int>>(key, temp));
+                }
+                gr[key][0] += 1;
+                return true;
+            }
+            if (isSymbol(v[i][j - 1]))
+            {
+                key = to_string(i) + "," + to_string(j - 1);
+                //  cout<<key<<endl;
+                if (gr.find(key) == gr.end())
+                {
+                    gr.insert(pair<string, vector<int>>(key, temp));
+                }
+                gr[key][0] += 1;
+                return true;
+            }
+        }
+        if (j < v[i].size() - 1)
+        {
+            if (isSymbol(v[i][j + 1]))
+            {
+                key = to_string(i) + "," + to_string(j + 1);
+                //  cout<<key<<endl;
+                if (gr.find(key) == gr.end())
+                {
+                    gr.insert(pair<string, vector<int>>(key, temp));
+                }
+                gr[key][0] += 1;
+                return true;
+            }
+            if (isSymbol(v[i + 1][j + 1]))
+            {
+                key = to_string(i + 1) + "," + to_string(j + 1);
+                //  cout<<key<<endl;
+                if (gr.find(key) == gr.end())
+                {
+                    gr.insert(pair<string, vector<int>>(key, temp));
+                }
+                gr[key][0] += 1;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main()
+{
+    string str;
+    vector<string> s;
+    while (getline(cin, str))
+    {
+        if (str.empty())
+        {
+            break;
+        }
+        s.push_back(str);
+    }
+    int num = 0;
+    bool valid = false;
+    temp[0] = 0;
+    temp[1] = 1;
+    for (int i = 0; i < s.size(); i++)
+    {
+
+        for (int j = 0; j < s[i].size(); j++)
+        {
+            if (isdigit(s[i][j]))
+            {
+                if (!valid)
+                {
+                    valid = isAdjToSymbol(s, i, j);
+                }
+                num = num * 10 + (s[i][j] - '0');
+            }
+            else
+            {
+                if (valid)
+                {
+
+                    gr[key][1] *= num;
+                    reset();
+                }
+                num = 0;
+                valid = false;
+            }
+        }
+        if (valid)
+        {
+            gr[key][1] *= num;
+            reset();
+        }
+        num = 0;
+        valid = false;
+    }
+    int ans = 0;
+    for (auto &it : gr)
+    {
+        // cout << it.first << " " << it.second[0] << " " << it.second[1] << endl;
+        if (it.second[0] == 2)
+        {
+            ans += it.second[1];
+        }
+    }
+    cout << ans;
+}
