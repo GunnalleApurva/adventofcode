@@ -1,0 +1,25 @@
+s = []
+while True:
+    try:
+        line = input()
+    except EOFError:
+        break
+    s.append(line[8:])
+    
+card = [1]*(len(s))
+# print(card)
+for k in range(len(s)):
+  [left,right] = s[k].split('|')
+  l1 = left.split()
+  l2 = right.split()
+  count = 0
+  for win in l1:
+    if win in l2 :
+      count += 1
+  for i in range (k+1,k+1+count):
+    card[i]+=card[k]
+
+print(sum(card))
+      
+
+  
