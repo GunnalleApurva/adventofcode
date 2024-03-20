@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 #include <climits>
-using namespace std;
 #define ll long long int
+
+using namespace std;
 
 void simplifyInput(vector<ll>& inp, map<ll,ll>& m){
   cin >> inp[0] >> inp[1] >> inp[2];
@@ -13,92 +14,47 @@ void simplifyInput(vector<ll>& inp, map<ll,ll>& m){
 
 int main()
 {
-    ll seeds[20];
-    for (int i = 0; i < 20; i++)
+    vector<ll> seeds(20);
+    // vector<ll> seeds(4);
+    for (int i = 0; i < seeds.size(); i++)
     {
         cin >> seeds[i];
     }
 
+    int sizes[] = {36,24,34,46,29,30,38};
+    // int sizes[] = {2,3,4,2,3,2,2};
     vector<ll> inp(3);
-    vector<vector<ll>> seed2soil, soil2fer, fer2wtr, wtr2light, light2temp, temp2hum, hum2loc;
-    map<ll, ll> m1, m2, m3, m4, m5, m6, m7;
+    vector<map<ll, ll>> m(7);
     ll nearestLoc = LLONG_MAX;
-
-    for (int i = 0; i < 36; i++)
-    {
-        simplifyInput(inp,m1);
+    
+    for(int i=0;i<6;i++){
+      for(int j=0;j<sizes[i];j++){
+        simplifyInput(inp,m[i]);
+      }
     }
-    for (int i = 0; i < 24; i++)
-    {
-        simplifyInput(inp,m2);
-    }
-    for (int i = 0; i < 34; i++)
-    {
-        simplifyInput(inp,m3);
-    }
-    for (int i = 0; i < 46; i++)
-    {
-        simplifyInput(inp,m4);
-    }
-    for (int i = 0; i < 29; i++)
-    {
-        simplifyInput(inp,m5);
-    }
-    for (int i = 0; i < 30; i++)
-    {
-       simplifyInput(inp,m6);
-    }
-    for (int i = 0; i < 38; i++)
+    for (int i = 0; i < sizes[7]; i++)
     {
         cin >> inp[0] >> inp[1] >> inp[2];
         nearestLoc = min(nearestLoc,inp[0]);
         for (int j = 0; j < inp[2]; j++)
         {
-            m7.insert({inp[1]++, inp[0]++});
+            m[6].insert({inp[1]++, inp[0]++});
         }
-        // simplifyInput(inp,m7);
     }
 
-    ll soil, fertilizer, water, light, temperature, humidity, location = nearestLoc;
+    ll key,value;
 
     for (auto &seed : seeds)
     {
-        soil = seed;
-        if (m1.find(seed) != m1.end())
-        {
-            soil = m1[seed];
+      key = seed;
+      for(int i=0;i<m.size();i++){
+        value = key;
+        if(m[i].find(key)!=m[i].end()){
+          value = m[i][key];
+          key = value;
         }
-        fertilizer = soil;
-        if (m2.find(soil) != m2.end())
-        {
-            fertilizer = m2[soil];
-        }
-        water = fertilizer;
-        if (m3.find(fertilizer) != m3.end())
-        {
-            water = m3[fertilizer];
-        }
-        light = water;
-        if (m4.find(water) != m4.end())
-        {
-            light = m4[water];
-        }
-        temperature = light;
-        if (m5.find(light) != m5.end())
-        {
-            temperature = m5[light];
-        }
-        humidity = temperature;
-        if (m6.find(temperature) != m6.end())
-        {
-            humidity = m6[temperature];
-        }
-        location = humidity;
-        if (m7.find(humidity) != m7.end())
-        {
-            location = m7[humidity];
-        }
-        nearestLoc = min(nearestLoc, location);
+      }
+        nearestLoc = min(nearestLoc, value);
     }
     
     cout << nearestLoc;
