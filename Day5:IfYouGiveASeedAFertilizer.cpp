@@ -1,15 +1,28 @@
 #include <bits/stdc++.h>
 #include <climits>
 #define ll long long int
-
 using namespace std;
 
-void simplifyInput(vector<ll>& inp, map<ll,ll>& m){
+vector<ll> inp(3);
+void takeInput(int size, vector<vector<ll>> & vi){
+  for(int s=0;s<size;s++){
   cin >> inp[0] >> inp[1] >> inp[2];
-        for (int j = 0; j < inp[2]; j++)
-        {
-            m.insert({inp[1]++, inp[0]++});
-        }
+  vi.push_back(inp);
+  }
+}
+
+ll findValue(vector<vector<vector<ll>>>v,ll seed){
+  ll key=seed,value=seed;
+  for(int i=0;i<7;i++){
+    value=key;
+    for(int row=0;row<v[i].size();row++){
+      if(key>=v[i][row][1] && key<=(v[i][row][1]+v[i][row][2]-1)){
+        value = v[i][row][0] + (key-v[i][row][1]);
+      }
+    }
+    key = value;
+  } 
+  return value;
 }
 
 int main()
@@ -23,39 +36,19 @@ int main()
 
     int sizes[] = {36,24,34,46,29,30,38};
     // int sizes[] = {2,3,4,2,3,2,2};
-    vector<ll> inp(3);
-    vector<map<ll, ll>> m(7);
     ll nearestLoc = LLONG_MAX;
     
-    for(int i=0;i<6;i++){
-      for(int j=0;j<sizes[i];j++){
-        simplifyInput(inp,m[i]);
-      }
-    }
-    for (int i = 0; i < sizes[7]; i++)
-    {
-        cin >> inp[0] >> inp[1] >> inp[2];
-        nearestLoc = min(nearestLoc,inp[0]);
-        for (int j = 0; j < inp[2]; j++)
-        {
-            m[6].insert({inp[1]++, inp[0]++});
-        }
-    }
-
-    ll key,value;
-
-    for (auto &seed : seeds)
-    {
-      key = seed;
-      for(int i=0;i<m.size();i++){
-        value = key;
-        if(m[i].find(key)!=m[i].end()){
-          value = m[i][key];
-          key = value;
-        }
-      }
-        nearestLoc = min(nearestLoc, value);
+    vector<vector<vector<ll>>>v(7);
+    for(int i=0;i<7;i++){
+      takeInput(sizes[i],v[i]);
     }
     
+    ll key,value;
+    
+    for(auto & seed : seeds){
+      key = seed;
+      value = findValue(v,key);
+      nearestLoc = min(nearestLoc,value);
+    }
     cout << nearestLoc;
 }
