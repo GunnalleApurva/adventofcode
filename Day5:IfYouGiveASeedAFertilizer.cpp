@@ -1,19 +1,14 @@
 #include <bits/stdc++.h>
+#include <climits>
 using namespace std;
 #define ll long long int
 
-ll findEntryWithLargestValue(map<ll, ll> sampleMap)
-{
-    pair<ll, ll> entryWithMaxValue = make_pair(0, 0);
-    map<ll, ll>::iterator currentEntry;
-    for (currentEntry = sampleMap.begin(); currentEntry != sampleMap.end(); ++currentEntry)
-    {
-        if (currentEntry->second > entryWithMaxValue.second)
+void simplifyInput(vector<ll>& inp, map<ll,ll>& m){
+  cin >> inp[0] >> inp[1] >> inp[2];
+        for (int j = 0; j < inp[2]; j++)
         {
-            entryWithMaxValue = make_pair(currentEntry->first, currentEntry->second);
+            m.insert({inp[1]++, inp[0]++});
         }
-    }
-    return entryWithMaxValue.second;
 }
 
 int main()
@@ -26,67 +21,45 @@ int main()
 
     vector<ll> inp(3);
     vector<vector<ll>> seed2soil, soil2fer, fer2wtr, wtr2light, light2temp, temp2hum, hum2loc;
-     map<ll, ll> m1, m2, m3, m4, m5, m6, m7;
+    map<ll, ll> m1, m2, m3, m4, m5, m6, m7;
+    ll nearestLoc = LLONG_MAX;
 
     for (int i = 0; i < 36; i++)
     {
-        cin >> inp[0] >> inp[1] >> inp[2];
-        for (int j = 0; j < inp[2]; j++)
-        {
-            m1.insert({inp[1]++, inp[0]++});
-        }
+        simplifyInput(inp,m1);
     }
     for (int i = 0; i < 24; i++)
     {
-        cin >> inp[0] >> inp[1] >> inp[2];
-        for (int j = 0; j < inp[2]; j++)
-        {
-            m2.insert({inp[1]++, inp[0]++});
-        }
+        simplifyInput(inp,m2);
     }
     for (int i = 0; i < 34; i++)
     {
-        cin >> inp[0] >> inp[1] >> inp[2];
-        for (int j = 0; j < inp[2]; j++)
-        {
-            m3.insert({inp[1]++, inp[0]++});
-        }
+        simplifyInput(inp,m3);
     }
     for (int i = 0; i < 46; i++)
     {
-        cin >> inp[0] >> inp[1] >> inp[2];
-        for (int j = 0; j < inp[2]; j++)
-        {
-            m4.insert({inp[1]++, inp[0]++});
-        }
+        simplifyInput(inp,m4);
     }
     for (int i = 0; i < 29; i++)
     {
-        cin >> inp[0] >> inp[1] >> inp[2];
-        for (int j = 0; j < inp[2]; j++)
-        {
-            m5.insert({inp[1]++, inp[0]++});
-        }
+        simplifyInput(inp,m5);
     }
     for (int i = 0; i < 30; i++)
     {
-        cin >> inp[0] >> inp[1] >> inp[2];
-        for (int j = 0; j < inp[2]; j++)
-        {
-            m6.insert({inp[1]++, inp[0]++});
-        }
+       simplifyInput(inp,m6);
     }
     for (int i = 0; i < 38; i++)
     {
         cin >> inp[0] >> inp[1] >> inp[2];
+        nearestLoc = min(nearestLoc,inp[0]);
         for (int j = 0; j < inp[2]; j++)
         {
             m7.insert({inp[1]++, inp[0]++});
         }
+        // simplifyInput(inp,m7);
     }
 
-    ll nearestLoc = findEntryWithLargestValue(m7);
-    ll soil = nearestLoc, fertilizer = nearestLoc, water = nearestLoc, light = nearestLoc, temperature = nearestLoc, humidity = nearestLoc, location = nearestLoc;
+    ll soil, fertilizer, water, light, temperature, humidity, location = nearestLoc;
 
     for (auto &seed : seeds)
     {
