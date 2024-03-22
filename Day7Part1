@@ -1,36 +1,31 @@
-def findRank(c):
-  f = char_counts = [c.count(char) for char in set(c)]
+def findType(c):
+  f = [c.count(char) for char in set(c)]
   if 5 in f:
     return 6 
   if 4 in f:
     return 5 
-  if 3 in f and 2 not in f:
+  if 3 in f and 2 in f:
     return 4
-  if 3 in f and 2 in f :
+  if 3 in f and 2 not in f :
     return 3 
   if f.count(2)==2:
     return 2 
   if f.count(2)==1:
     return 1 
   return 0
-    
+
+# True if b is stronger
 def areInOrder(a,b):
   l = ['A','K','Q','J','T','9','8','7','6','5','4','3','2']
   for i in range(5):
     r1,r2 = l.index(a[i]),l.index(b[i])
-    if r1<r2 : 
-      # print(i,l[r1],l[r2],"Needs swap")
-      return False # a is better 
-    if r2>r1:
-      # print(i,l[r1],l[r2],"No swap") 
-      return True # b is better
-
+    if r1<r2 : return False  
+    if r1>r2 : return True
 
 def sortRanks(l):
   for i in range(len(l)):
     for j in range(i+1,len(l)):
       if( not areInOrder(l[i][0],l[j][0])  ):
-        # print("Swapping   ",l[i],l[j])
         l[i],l[j] = l[j],l[i]
   return l
 
@@ -43,17 +38,13 @@ while True:
     cards.append(card)
   except:
     break
-      
+
 rank = [[],[],[],[],[],[],[]]
 for c in cards:
-  r = findRank(c[0]) 
+  r = findType(c[0]) 
   rank[r].append(c) 
 
 for i in range(6,-1,-1):
-  rank[i] = sortRanks(rank[i])
-  
-for i in range(6,-1,-1):
-  print(rank[i])
   rank[i] = sortRanks(rank[i])
 
 score,itr = 0,1
@@ -63,8 +54,6 @@ for i in range(7):
     for c in l:
       score += c[1]*itr
       itr += 1
-    
+
+# print(rank)
 print(score)
-  
-      
-      
