@@ -1,0 +1,12 @@
+ip = ''' '''
+
+l = ip.split()
+first = [int(l[i]) for i in range(0,len(l),2) ]
+second = [int(l[i]) for i in range(1,len(l),2)]
+element_counts = dict(Counter(second))
+ans = 0
+
+for i in range(len(first)):
+    ans += first[i]*(element_counts.get(first[i],0))
+
+print(ans)
