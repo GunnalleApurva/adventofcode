@@ -1,0 +1,24 @@
+def incr(lst):
+    for i in range(1,len(lst)):
+        if(lst[i]-lst[i-1] not in (1,2,3)):
+            return False
+    return True
+def decr(lst):
+    for i in range(1,len(lst)):
+        if(lst[i-1]-lst[i] not in (1,2,3)):
+            return False
+    return True
+
+inp = ''' '''
+
+inp = inp.split('\n')
+v = []
+for line in inp:
+    lst = list(map(int,line.split()))
+    v.append(lst)
+
+ans = 0
+for lst in v :
+    if(incr(lst) or decr(lst)):
+        ans += 1
+print(ans)
