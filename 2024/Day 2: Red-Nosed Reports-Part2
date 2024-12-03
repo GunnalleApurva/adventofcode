@@ -1,0 +1,45 @@
+def is_safe(lst):
+    def incr(lst):
+        unsafe = 0
+        for i in range(1, len(lst)):
+            if lst[i] - lst[i-1] not in (1, 2, 3):
+                unsafe += 1
+                if(i+1<len(lst) and lst[i+1]-lst[i-1] not in (1,2,3)):
+                    return False
+                if unsafe > 2:
+                    return False
+        return True
+
+    def decr(lst):
+        unsafe = 0
+        for i in range(1, len(lst)):
+            if lst[i-1] - lst[i] not in (1, 2, 3):
+                unsafe += 1
+                if unsafe > 2:
+                    return False
+        return True
+
+    return incr(lst) or decr(lst)
+
+def is_safe_with_dampener(lst):
+    # Check if already safe
+    if is_safe(lst):
+        return True
+    
+    for i in range(len(lst)):
+        modified_lst = lst[:i] + lst[i+1:]  
+        if is_safe(modified_lst):
+            return True
+    return False
+
+
+inp = ''' '''
+
+v = [list(map(int, line.split())) for line in inp.split('\n')]
+
+ans = 0
+for lst in v:
+    if is_safe_with_dampener(lst):
+        ans += 1
+
+print(ans)
