@@ -1,0 +1,39 @@
+def count_xmas_patterns(matrix):
+    rows, cols = len(matrix), len(matrix[0])
+    xmas_count = 0
+
+    def is_xmas(x, y):
+        """Checks if an X-MAS pattern is centered at (x, y)."""
+        if x - 1 >= 0 and x + 1 < rows and y - 1 >= 0 and y + 1 < cols:
+            # Extract diagonals
+            diag1 = [matrix[x - 1][y - 1], matrix[x][y], matrix[x + 1][y + 1]]
+            diag2 = [matrix[x - 1][y + 1], matrix[x][y], matrix[x + 1][y - 1]]
+
+            return (
+                diag1 == list("MAS") or diag1 == list("SAM")
+            ) and (
+                diag2 == list("MAS") or diag2 == list("SAM")
+            )
+        return False
+
+    for x in range(rows):
+        for y in range(cols):
+            if is_xmas(x, y):
+                xmas_count += 1
+
+    return xmas_count
+
+inp = '''MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX'''
+matrix = [list(line) for line in inp.split('\n')]
+
+result = count_xmas_patterns(matrix)
+print(result)
