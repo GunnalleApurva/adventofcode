@@ -71,10 +71,8 @@ inp = '''47|53
 61,13,29
 97,13,75,29,47'''
 
-# Run the solution
 result, incorrect_updates = process_updates(inp)
 
-# Output the results
 print("Sum of middle page numbers:", result)
 print("Incorrect updates and their corrected orders:")
 for update in incorrect_updates:
