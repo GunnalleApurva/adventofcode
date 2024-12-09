@@ -1,0 +1,87 @@
+inp = "2333133121414131402"
+parsed = []
+n=len(inp)
+idx = 0
+for i in range(0,n,2):
+    file = int(inp[i])
+    space = 0
+    if i+1<n:
+        space = int(inp[i+1])
+    print(f"f: {file} , s : {space} ")
+    for f in range(file) :
+        parsed.append(str(idx))
+    for s in range(space):
+        parsed.append(".")
+    idx+=1
+
+# print(parsed)
+
+st = 0 
+n=len(parsed)
+end = n-1
+dots = 0
+last = 0
+
+dotsCount = parsed.count(".")
+while st<end:
+    s = st
+
+    while st<end and end>0 and parsed[end]=="." :
+        end -= 1
+    # print("move bwd when we see dots in end : ", "".join(parsed))
+
+    lastEnd = end 
+    num = parsed[end]
+    while parsed[end]!="." and parsed[end]==num:
+        end-=1 
+    lastL = lastEnd - end
+    lastStart = end+1
+
+    while st<end and end<n and parsed[st]!="." :
+        st+=1 
+    # print("move fwd when we see digs in start : ","".join(parsed) )
+    dotStart = st 
+    while parsed[st]=="."  and st-dotStart+1<=lastL :
+        st+=1 
+    dotL = st-dotStart
+    dotEnd = st-1    
+
+    print(f"dotL : {dotL}, lastL : {lastL}")
+
+    if lastL>dotL:
+        st = s 
+    else:
+        parsed = parsed[:dotStart] + parsed[lastStart:lastStart+lastL] + parsed[dotStart+lastL:lastStart] + parsed[dotStart:dotStart+lastL] + parsed[lastEnd+1:] 
+        st += lastL 
+    # print("".join(parsed))
+    print(parsed)
+
+checkSum = 0
+for i in range(len(parsed)):
+    if parsed[i]==".":
+        break
+    checkSum += int(parsed[i])*i
+print(checkSum)
+    
+# 00...111...2...333.44.5555.6666.777.888899
+# n = 42
+# ds = 2 
+# de = 4 
+# dl = 3 
+# le = 41
+# ll = 2
+# ls = 40
+
+# 00  99 . 111...2...333.44.5555.6666.777.8888 .. 
+
+# 00...111...2...333.44.5555.6666.777.888899
+# 0099.111...2...333.44.5555.6666.777.8888..
+# 0099.1117772...333.44.5555.6666.....8888..
+# 0099.111777244.333....5555.6666.....8888..
+# 00992111777.44.333....5555.6666.....8888..
+
+# 01 234 5-39 40-41
+# parsed = parsed[:dotStart] + parsed[lastStart:lastStart+lastL] + parsed[dotStart+lastL:lastStart] + parsed[dotStart:dotStart+lastL] + parsed[lastEnd+1:] 
+# expected : 00992111777.44.333....5555.6666.....8888..
+#incomplete code
+
