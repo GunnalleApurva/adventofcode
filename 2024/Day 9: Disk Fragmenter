@@ -1,0 +1,38 @@
+from inp import inp 
+inp = inp
+parsed = ""
+
+parsed = []
+n=len(inp)
+idx = 0
+for i in range(0,n,2):
+    file = int(inp[i])
+    space = 0
+    if i+1<n:
+        space = int(inp[i+1])
+    print(f"f: {file} , s : {space} ")
+    for f in range(file) :
+        parsed.append(str(idx))
+    for s in range(space):
+        parsed.append(".")
+    idx+=1
+st = 0
+end = len(parsed)-1
+while st<end:
+    if parsed[st]!=".":
+        st+=1
+        continue
+    if parsed[end]==".":
+        end-=1
+        continue
+    parsed[st],parsed[end] = parsed[end],parsed[st]    
+    st+=1
+    end-=1 
+
+print("".join(parsed))
+checkSum = 0
+for i in range(len(parsed)):
+    if parsed[i]==".":
+        break
+    checkSum += int(parsed[i])*i
+print(checkSum)
