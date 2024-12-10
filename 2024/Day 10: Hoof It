@@ -1,0 +1,68 @@
+from aocday10inp import exampleInput,testInput,exampleInput2
+
+inp = testInput.splitlines()
+grid = []
+for line in inp:
+    lst = [int(l) for l in line]
+    grid.append(lst)
+
+nines = {}
+total = 0
+
+n = len(grid)
+m = len(grid[0])
+
+def find9(pos, visited):
+    global total
+    i, j = pos
+
+    if (i, j) in visited:
+        return  
+    visited.add((i, j))
+    num = grid[i][j]
+
+    if num == 9:
+        total += 1
+        if (i, j) in nines:
+            nines[(i, j)] += 1
+        else:
+            nines[(i, j)] = 1
+        return  
+
+    if j + 1 < m and grid[i][j + 1] - num == 1:  
+        find9((i, j + 1), visited)
+    if j - 1 >= 0 and grid[i][j - 1] - num == 1:  
+        find9((i, j - 1), visited)
+    if i + 1 < n and grid[i + 1][j] - num == 1:  
+        find9((i + 1, j), visited)
+    if i - 1 >= 0 and grid[i - 1][j] - num == 1:  
+        find9((i - 1, j), visited)
+
+    
+
+zeros = [(i, j) for i in range(n) for j in range(m) if grid[i][j] == 0]
+
+for zero in zeros:
+    total = 0
+    find9(zero, set())  
+    nines[zero] = total
+
+countSum = sum(nines[zero] for zero in zeros)
+
+print(countSum)
+
+
+
+# [8, 9, 0, 1, 0, 1, 2, 3] 
+# [7, 8, 1, 2, 1, 8, 7, 4]
+# [8, 7, 4, 3, 0, 9, 6, 5]
+# [9, 6, 5, 4, 9, 8, 7, 4]
+# [4, 5, 6, 7, 8, 9, 0, 3]
+# [3, 2, 0, 1, 9, 0, 1, 2]
+# [0, 1, 3, 2, 9, 8, 0, 1]
+# [1, 0, 4, 5, 6, 7, 3, 2]
+
+# [0, 1, 2, 3]
+# [1, 2, 3, 4]
+# [8, 7, 6, 5]
+# [9, 8, 7, 6]
